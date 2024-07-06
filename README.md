@@ -80,7 +80,6 @@ auto main() -> int
     ~RequestDispatcher();
     ```
     Cleans up resources and stops the worker thread gracefully.
-    ```
 
 - make_request:
     ```cpp
