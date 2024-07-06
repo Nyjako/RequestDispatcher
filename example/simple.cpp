@@ -1,6 +1,8 @@
-#include "request_dispatcher/request_dispatcher.hpp"
-#include <curl/curl.h>
 #include <iostream>
+
+#include <curl/curl.h>
+
+#include "request_dispatcher/request_dispatcher.hpp"
 
 auto main() -> int
 {
@@ -18,14 +20,14 @@ auto main() -> int
         future.wait();
         CURLcode res = future.get();
 
-        std::cout << "Request " << i + 1 << " completed with code: " << res << std::endl;
+        std::cout << "Request " << i + 1 << " completed with code: " << res
+                  << std::endl;
 
         // user is responsible for cleaning up the CURL handle
         if (res == CURLE_OK) {
             char* content_type;
             curl_easy_getinfo(curl, CURLINFO_CONTENT_TYPE, &content_type);
-            if(content_type)
-            {
+            if (content_type) {
                 std::cout << "Content-Type: " << content_type << std::endl;
             }
         }

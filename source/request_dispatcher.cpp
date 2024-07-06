@@ -1,14 +1,13 @@
 #include "request_dispatcher/request_dispatcher.hpp"
 
-
-RequestDispatcher::RequestDispatcher(int time_frame_seconds, int max_request_count) : 
-    m_time_frame_seconds(time_frame_seconds), 
-    m_max_request_count(max_request_count), 
-    m_stop_worker(false) 
+RequestDispatcher::RequestDispatcher(int time_frame_seconds,
+                                     int max_request_count)
+    : m_time_frame_seconds(time_frame_seconds)
+    , m_max_request_count(max_request_count)
+    , m_stop_worker(false)
 {
     m_worker_thread = std::thread(&RequestDispatcher::process_queue, this);
 }
-
 
 RequestDispatcher::~RequestDispatcher()
 {
@@ -19,7 +18,6 @@ RequestDispatcher::~RequestDispatcher()
     m_cv.notify_all();
     m_worker_thread.join();
 }
-
 
 auto RequestDispatcher::make_request(CURL* curl) -> std::future<CURLcode>
 {
@@ -35,7 +33,6 @@ auto RequestDispatcher::make_request(CURL* curl) -> std::future<CURLcode>
     return future;
 }
 
-
 void RequestDispatcher::process_queue()
 {
     int request_count = 0;
@@ -43,10 +40,10 @@ void RequestDispatcher::process_queue()
 
     while (true) {
         std::unique_lock<std::mutex> lock(m_queue_mutex);
-        m_cv.wait(lock, [this] { return !m_request_queue.empty() || m_stop_worker; });
+        m_cv.wait(lock,
+                  [this] { return !m_request_queue.empty() || m_stop_worker; });
 
-        if (m_stop_worker && m_request_queue.empty())
-        {
+        if (m_stop_worker && m_request_queue.empty()) {
             break;
         }
 
@@ -55,7 +52,8 @@ void RequestDispatcher::process_queue()
         lock.unlock();
 
         auto now = std::chrono::steady_clock::now();
-        auto duration = std::chrono::duration_cast<std::chrono::seconds>(now - start_time);
+        auto duration =
+            std::chrono::duration_cast<std::chrono::seconds>(now - start_time);
 
         // if we moved away from time window we can start another one
         if (duration.count() >= m_time_frame_seconds) {
@@ -65,7 +63,8 @@ void RequestDispatcher::process_queue()
 
         // if limit was reached wait for clear
         if (request_count >= m_max_request_count) {
-            auto wait_time = std::chrono::seconds(m_time_frame_seconds) - duration;
+            auto wait_time =
+                std::chrono::seconds(m_time_frame_seconds) - duration;
             std::this_thread::sleep_for(wait_time);
 
             request_count = 0;

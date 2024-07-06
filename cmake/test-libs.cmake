@@ -15,5 +15,5 @@ if (WIN32)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 endif (WIN32)
 
-message(STATUS "Making GTest avaiable.")
+message(STATUS "Making GTest available.")
 FetchContent_MakeAvailable(googletest)
