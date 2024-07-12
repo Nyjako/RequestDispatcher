@@ -2,14 +2,14 @@ message(STATUS "Looking for CURL")
 
 
 include(FindCURL)
-find_package(CURL REQUIRED)
+find_package(CURL)
 
 if(CURL_FOUND)
   message(STATUS "Found CURL version: ${CURL_VERSION_STRING}")
   message(STATUS "Using CURL include dir(s): ${CURL_INCLUDE_DIRS}")
   message(STATUS "Using CURL lib(s): ${CURL_LIBRARIES}")
 else()
-  message(NOTICE "Could not find CURL trying to fetch")
+  message(STATUS "Could not find CURL trying to fetch")
   include(FetchContent)
 
   FetchContent_Declare(curl
@@ -20,7 +20,7 @@ else()
 
   FetchContent_MakeAvailable(curl)
 
-  find_package(curl) # probably with CONFIG REQUIRED
+  find_package(curl REQUIRED) # probably with CONFIG REQUIRED
 endif()
 
 # All following targets should search these directories for headers
