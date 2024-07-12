@@ -4,7 +4,7 @@ include(cmake/prelude.cmake)
 
 project(
     request_dispatcher
-    VERSION 1.1.3
+    VERSION 1.1.4
     DESCRIPTION "Short description"
     HOMEPAGE_URL "https://example.com/"
     LANGUAGES CXX

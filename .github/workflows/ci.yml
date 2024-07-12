@@ -139,7 +139,18 @@ jobs:
     - name: Install dependencies on Windows
       if: matrix.os == 'windows-2022'
       run: |
-          choco install curl
+        choco install curl
+        choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
+        curl --version
+        cmake --version
+    
+    - name: Set CURL_LIBRARY and CURL_INCLUDE_DIR on Windows
+      if: matrix.os == 'windows-2022'
+      run: |
+        $curlPath = (Get-Command curl.exe).Source
+        $curlDir = Split-Path $curlPath
+        $env:CURL_LIBRARY = "$curlDir\lib\libcurl.lib"
+        $env:CURL_INCLUDE_DIR = "$curlDir\include"
 
     # - name: Install static analyzers
     #   if: matrix.os == 'ubuntu-22.04'
