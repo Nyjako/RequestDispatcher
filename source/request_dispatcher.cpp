@@ -1,12 +1,14 @@
-#include "request_dispatcher/request_dispatcher.hpp"
-#include <thread>
 #include <chrono>
 #include <condition_variable>
 #include <future>
 #include <mutex>
 #include <queue>
 #include <string>
+#include <thread>
 #include <vector>
+
+#include "request_dispatcher/request_dispatcher.hpp"
+
 #include <curl/curl.h>
 
 RequestDispatcher::RequestDispatcher(int time_frame_seconds,
