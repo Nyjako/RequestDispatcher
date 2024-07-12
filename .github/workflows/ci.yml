@@ -32,46 +32,47 @@ jobs:
       if: always()
       run: cmake -P cmake/spell.cmake
 
-  coverage:
-    needs: [lint]
+  # coverage:
+  #   needs: [lint]
 
-    runs-on: ubuntu-22.04
+  #   runs-on: ubuntu-22.04
 
     # To enable coverage, delete the last line from the conditional below and
     # edit the "<name>" placeholder to your GitHub name.
     # If you do not wish to use codecov, then simply delete this job from the
     # workflow.
-    if: github.repository_owner == '<name>'
-      && false
 
-    steps:
-    - uses: actions/checkout@v4
+    # if: github.repository_owner == '<name>'
+    #   && false
 
-    - name: Install LCov
-      run: sudo apt-get update -q
-        && sudo apt-get install lcov -q -y
+    # steps:
+    # - uses: actions/checkout@v4
 
-    - name: Install Curl
-      run: sudo apt-get update -q && sudo apt-get install -y libcurl4-openssl-dev
+    # - name: Install LCov
+    #   run: sudo apt-get update -q
+    #     && sudo apt-get install lcov -q -y
 
-    - name: Configure
-      run: cmake --preset=ci-coverage
+    # - name: Install Curl
+    #   run: sudo apt-get update -q && sudo apt-get install -y libcurl4-openssl-dev
 
-    - name: Build
-      run: cmake --build build/coverage -j 2
+    # - name: Configure
+    #   run: cmake --preset=ci-coverage
 
-    - name: Test
-      working-directory: build/coverage
-      run: ctest --output-on-failure --no-tests=error -j 2
+    # - name: Build
+    #   run: cmake --build build/coverage -j 2
 
-    - name: Process coverage info
-      run: cmake --build build/coverage -t coverage
+    # - name: Test
+    #   working-directory: build/coverage
+    #   run: ctest --output-on-failure --no-tests=error -j 2
 
-    - name: Submit to codecov.io
-      uses: codecov/codecov-action@v4
-      with:
-        file: build/coverage/coverage.info
-        token: ${{ secrets.CODECOV_TOKEN }}
+    # - name: Process coverage info
+    #   run: cmake --build build/coverage -t coverage
+
+    # - name: Submit to codecov.io
+    #   uses: codecov/codecov-action@v4
+    #   with:
+    #     file: build/coverage/coverage.info
+    #     token: ${{ secrets.CODECOV_TOKEN }}
 
   sanitize:
     needs: [lint]
