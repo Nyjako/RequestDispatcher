@@ -1,4 +1,13 @@
 #include "request_dispatcher/request_dispatcher.hpp"
+#include <thread>
+#include <chrono>
+#include <condition_variable>
+#include <future>
+#include <mutex>
+#include <queue>
+#include <string>
+#include <vector>
+#include <curl/curl.h>
 
 RequestDispatcher::RequestDispatcher(int time_frame_seconds,
                                      int max_request_count)
