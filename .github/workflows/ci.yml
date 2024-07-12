@@ -193,7 +193,7 @@ jobs:
     # simply delete this job similarly to the coverage one.
     if: github.ref == 'refs/heads/master'
       && github.event_name == 'push'
-      && github.repository_owner == '<name>'
+      && github.repository_owner == 'Nyjako'
       && false
 
     permissions:
@@ -219,5 +219,5 @@ jobs:
     - name: Deploy docs
       uses: peaceiris/actions-gh-pages@v4
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.DOCS_GITHUB_TOKEN }}
         publish_dir: build/docs/html
